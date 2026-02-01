@@ -28,6 +28,12 @@ export const hero: Field = {
       required: false,
       localized: true,
     },
+    {
+      name: 'showSearch',
+      type: 'checkbox',
+      defaultValue: false,
+      label: 'Pokaż wyszukiwarkę',
+    },
   ],
   label: false,
 }

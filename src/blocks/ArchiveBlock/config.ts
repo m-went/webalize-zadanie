@@ -1,94 +1,61 @@
 import type { Block } from 'payload'
 
-import {
-  FixedToolbarFeature,
-  HeadingFeature,
-  InlineToolbarFeature,
-  lexicalEditor,
-} from '@payloadcms/richtext-lexical'
-
 export const Archive: Block = {
   slug: 'archive',
-  interfaceName: 'ArchiveBlock',
+  labels: {
+    singular: 'Lista Treści',
+    plural: 'Listy Treści',
+  },
   fields: [
-    {
-      name: 'introContent',
-      type: 'richText',
-      editor: lexicalEditor({
-        features: ({ rootFeatures }) => {
-          return [
-            ...rootFeatures,
-            HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
-            FixedToolbarFeature(),
-            InlineToolbarFeature(),
-          ]
-        },
-      }),
-      label: 'Intro Content',
-    },
     {
       name: 'populateBy',
       type: 'select',
       defaultValue: 'collection',
       options: [
-        {
-          label: 'Collection',
-          value: 'collection',
-        },
-        {
-          label: 'Individual Selection',
-          value: 'selection',
-        },
+        { label: 'Kolekcja', value: 'collection' },
+        { label: 'Ręczny wybór', value: 'selection' },
       ],
     },
     {
       name: 'relationTo',
       type: 'select',
+      defaultValue: 'news',
+      label: 'Wybierz kolekcję do wyświetlenia',
+      options: [
+        { label: 'Newsy', value: 'news' },
+        { label: 'Integracje', value: 'integrations' },
+      ],
       admin: {
         condition: (_, siblingData) => siblingData.populateBy === 'collection',
       },
-      defaultValue: 'posts',
-      label: 'Collections To Show',
-      options: [
-        {
-          label: 'Posts',
-          value: 'posts',
-        },
-      ],
     },
     {
-      name: 'categories',
+      name: 'selectedCategories',
       type: 'relationship',
-      admin: {
-        condition: (_, siblingData) => siblingData.populateBy === 'collection',
-      },
+      relationTo: 'integration-categories',
+      label: 'Wyświetlane Kategorie',
       hasMany: true,
-      label: 'Categories To Show',
-      relationTo: 'categories',
+      admin: {
+        description:
+          'Wybierz kategorie, które mają pojawić się jako przyciski filtrów. Zostaw puste, aby pokazać wszystkie.',
+        condition: (_, siblingData) => siblingData.relationTo === 'integrations',
+      },
     },
     {
       name: 'limit',
       type: 'number',
-      admin: {
-        condition: (_, siblingData) => siblingData.populateBy === 'collection',
-        step: 1,
-      },
       defaultValue: 10,
-      label: 'Limit',
+      label: 'Ilość elementów na start',
     },
+
     {
       name: 'selectedDocs',
       type: 'relationship',
+      relationTo: ['news', 'integrations'],
+      hasMany: true,
       admin: {
         condition: (_, siblingData) => siblingData.populateBy === 'selection',
       },
-      hasMany: true,
-      label: 'Selection',
-      relationTo: ['posts'],
     },
   ],
-  labels: {
-    plural: 'Archives',
-    singular: 'Archive',
-  },
 }

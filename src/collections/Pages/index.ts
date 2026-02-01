@@ -7,6 +7,7 @@ import { populatePublishedAt } from '../../hooks/populatePublishedAt'
 import { revalidateDelete, revalidatePage } from './hooks/revalidatePage'
 import { Faq } from '@/blocks/Faq/config'
 import { seoTab } from '@/fields/seoTab'
+import { Archive } from '@/blocks/ArchiveBlock/config'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
@@ -37,27 +38,7 @@ export const Pages: CollectionConfig<'pages'> = {
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [
-                Faq,
-                {
-                  slug: 'archive',
-                  labels: { singular: 'Kolekcja', plural: 'Kolekcje' },
-                  fields: [
-                    {
-                      name: 'selectCollection',
-                      type: 'select',
-                      defaultValue: 'news',
-                      options: [{ label: 'Newsy', value: 'news' }],
-                    },
-                    {
-                      name: 'limit',
-                      type: 'number',
-                      defaultValue: 10,
-                      label: 'Ilość wpisów na stronę',
-                    },
-                  ],
-                },
-              ],
+              blocks: [Faq, Archive],
               required: true,
             },
           ],
@@ -69,7 +50,7 @@ export const Pages: CollectionConfig<'pages'> = {
     {
       name: 'publishedAt',
       type: 'date',
-      defaultValue: new Date(),
+      defaultValue: () => new Date(),
       admin: {
         position: 'sidebar',
       },

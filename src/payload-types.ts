@@ -74,6 +74,8 @@ export interface Config {
     users: User;
     news: News;
     faq: Faq;
+    integrations: Integration;
+    'integration-categories': IntegrationCategory;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -98,6 +100,8 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     news: NewsSelect<false> | NewsSelect<true>;
     faq: FaqSelect<false> | FaqSelect<true>;
+    integrations: IntegrationsSelect<false> | IntegrationsSelect<true>;
+    'integration-categories': IntegrationCategoriesSelect<false> | IntegrationCategoriesSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -178,6 +182,7 @@ export interface Page {
       };
       [k: string]: unknown;
     } | null;
+    showSearch?: boolean | null;
   };
   layout: (
     | {
@@ -212,8 +217,25 @@ export interface Page {
         blockType: 'faqBlock';
       }
     | {
-        selectCollection?: 'news' | null;
+        populateBy?: ('collection' | 'selection') | null;
+        relationTo?: ('news' | 'integrations') | null;
+        /**
+         * Wybierz kategorie, które mają pojawić się jako przyciski filtrów. Zostaw puste, aby pokazać wszystkie.
+         */
+        selectedCategories?: (number | IntegrationCategory)[] | null;
         limit?: number | null;
+        selectedDocs?:
+          | (
+              | {
+                  relationTo: 'news';
+                  value: number | News;
+                }
+              | {
+                  relationTo: 'integrations';
+                  value: number | Integration;
+                }
+            )[]
+          | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'archive';
@@ -234,49 +256,80 @@ export interface Page {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "posts".
+ * via the `definition` "integration-categories".
  */
-export interface Post {
+export interface IntegrationCategory {
+  id: number;
+  /**
+   * Nazwa kategorii na przycisku
+   */
+  title: string;
+  /**
+   * Krótki opis kategorii
+   */
+  excerpt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "news".
+ */
+export interface News {
   id: number;
   title: string;
-  heroImage?: (number | null) | Media;
-  content: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  relatedPosts?: (number | Post)[] | null;
-  categories?: (number | Category)[] | null;
+  heroImage: number | Media;
+  content?:
+    | (
+        | {
+            level: 'h1' | 'h2' | 'h3';
+            text: string;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'newsHeader';
+          }
+        | {
+            content: string;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'newsText';
+          }
+        | {
+            quote: string;
+            author: string;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'newsQuote';
+          }
+        | {
+            type: 'ordered' | 'unordered';
+            items: {
+              text: string;
+              id?: string | null;
+            }[];
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'newsList';
+          }
+        | {
+            image: number | Media;
+            caption?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'newsImage';
+          }
+      )[]
+    | null;
+  excerpt: string;
+  readingTime: number;
   meta?: {
     title?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (number | null) | Media;
     description?: string | null;
   };
-  publishedAt?: string | null;
-  authors?: (number | User)[] | null;
-  populatedAuthors?:
-    | {
-        id?: string | null;
-        name?: string | null;
-      }[]
-    | null;
+  publishedAt: string;
   /**
-   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   * Używany w URL, np. /news/moj-artykul
    */
-  generateSlug?: boolean | null;
   slug: string;
   updatedAt: string;
   createdAt: string;
@@ -403,6 +456,92 @@ export interface FolderInterface {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "integrations".
+ */
+export interface Integration {
+  id: number;
+  title: string;
+  logo: number | Media;
+  category: (number | IntegrationCategory)[];
+  excerpt: string;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+  };
+  /**
+   * Używany w URL, np. /news/moj-artykul
+   */
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "posts".
+ */
+export interface Post {
+  id: number;
+  title: string;
+  heroImage?: (number | null) | Media;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  relatedPosts?: (number | Post)[] | null;
+  categories?: (number | Category)[] | null;
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    description?: string | null;
+  };
+  publishedAt?: string | null;
+  authors?: (number | User)[] | null;
+  populatedAuthors?:
+    | {
+        id?: string | null;
+        name?: string | null;
+      }[]
+    | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "categories".
  */
 export interface Category {
@@ -449,70 +588,6 @@ export interface User {
       }[]
     | null;
   password?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "news".
- */
-export interface News {
-  id: number;
-  title: string;
-  heroImage: number | Media;
-  content?:
-    | (
-        | {
-            level: 'h1' | 'h2' | 'h3';
-            text: string;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'newsHeader';
-          }
-        | {
-            content: string;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'newsText';
-          }
-        | {
-            quote: string;
-            author: string;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'newsQuote';
-          }
-        | {
-            type: 'ordered' | 'unordered';
-            items: {
-              text: string;
-              id?: string | null;
-            }[];
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'newsList';
-          }
-        | {
-            image: number | Media;
-            caption?: string | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'newsImage';
-          }
-      )[]
-    | null;
-  excerpt: string;
-  readingTime: number;
-  meta?: {
-    title?: string | null;
-    description?: string | null;
-  };
-  publishedAt: string;
-  /**
-   * Używany w URL, np. /news/moj-artykul
-   */
-  slug: string;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -944,6 +1019,14 @@ export interface PayloadLockedDocument {
         value: number | Faq;
       } | null)
     | ({
+        relationTo: 'integrations';
+        value: number | Integration;
+      } | null)
+    | ({
+        relationTo: 'integration-categories';
+        value: number | IntegrationCategory;
+      } | null)
+    | ({
         relationTo: 'redirects';
         value: number | Redirect;
       } | null)
@@ -1016,6 +1099,7 @@ export interface PagesSelect<T extends boolean = true> {
     | {
         title?: T;
         Opis?: T;
+        showSearch?: T;
       };
   layout?:
     | T
@@ -1043,8 +1127,11 @@ export interface PagesSelect<T extends boolean = true> {
         archive?:
           | T
           | {
-              selectCollection?: T;
+              populateBy?: T;
+              relationTo?: T;
+              selectedCategories?: T;
               limit?: T;
+              selectedDocs?: T;
               id?: T;
               blockName?: T;
             };
@@ -1319,6 +1406,36 @@ export interface FaqSelect<T extends boolean = true> {
             };
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "integrations_select".
+ */
+export interface IntegrationsSelect<T extends boolean = true> {
+  title?: T;
+  logo?: T;
+  category?: T;
+  excerpt?: T;
+  content?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+      };
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "integration-categories_select".
+ */
+export interface IntegrationCategoriesSelect<T extends boolean = true> {
+  title?: T;
+  excerpt?: T;
   updatedAt?: T;
   createdAt?: T;
 }

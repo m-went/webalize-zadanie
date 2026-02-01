@@ -15,6 +15,8 @@ import { Footer } from './globals/Footer'
 import { News } from './collections/News/News'
 import { Header } from './globals/Header'
 import { Faq } from './collections/Faq/Faq'
+import { Integrations } from './collections/Integrations/Integrations'
+import { IntegrationCategories } from './collections/IntegrationCategories/IntegrationCategories'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -63,7 +65,17 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URL || '',
     },
   }),
-  collections: [Pages, Posts, Media, Categories, Users, News, Faq],
+  collections: [
+    Pages,
+    Posts,
+    Media,
+    Categories,
+    Users,
+    News,
+    Faq,
+    Integrations,
+    IntegrationCategories,
+  ],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],
   plugins,
