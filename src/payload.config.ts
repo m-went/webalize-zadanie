@@ -14,6 +14,7 @@ import { getServerSideURL } from './utilities/getURL'
 import { Footer } from './globals/Footer'
 import { News } from './collections/News/News'
 import { Header } from './globals/Header'
+import { Faq } from './collections/Faq/Faq'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -62,7 +63,7 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URL || '',
     },
   }),
-  collections: [Pages, Posts, Media, Categories, Users, News],
+  collections: [Pages, Posts, Media, Categories, Users, News, Faq],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],
   plugins,

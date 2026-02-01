@@ -3,7 +3,8 @@ import { NewsImage } from '@/blocks/News/NewsImage'
 import { NewsList } from '@/blocks/News/NewsList'
 import { NewsQuote } from '@/blocks/News/NewsQuote'
 import { NewsText } from '@/blocks/News/NewsText'
-import type { CollectionConfig } from 'payload'
+import { seoTab } from '@/fields/seoTab'
+import { type CollectionConfig } from 'payload'
 
 export const News: CollectionConfig<'news'> = {
   slug: 'news',
@@ -18,56 +19,40 @@ export const News: CollectionConfig<'news'> = {
   },
 
   fields: [
-    // ===== LIST VIEW =====
     {
-      name: 'title',
-      type: 'text',
-      required: true,
-      localized: true,
+      type: 'tabs',
+      tabs: [
+        {
+          label: 'Treść Newsa',
+          fields: [
+            { name: 'title', type: 'text', required: true, localized: true },
+            { name: 'heroImage', type: 'upload', relationTo: 'media', required: true },
+            {
+              name: 'content',
+              type: 'blocks',
+              blocks: [NewsHeader, NewsText, NewsQuote, NewsList, NewsImage],
+            },
+          ],
+        },
+        {
+          label: 'Widok listy',
+          fields: [
+            { name: 'excerpt', type: 'textarea', required: true, localized: true },
+            { name: 'readingTime', type: 'number', required: true },
+          ],
+        },
+        seoTab,
+      ],
     },
-    {
-      name: 'excerpt',
-      type: 'textarea',
-      required: true,
-      localized: true,
-    },
-    {
-      name: 'readingTime',
-      type: 'number',
-      required: true,
-      min: 1,
-      admin: {
-        description: 'Czas czytania w minutach',
-      },
-    },
-    {
-      name: 'listImage',
-      type: 'upload',
-      relationTo: 'media',
-      required: true,
-    },
-
-    // ===== PAGE VIEW =====
-    {
-      name: 'heroImage',
-      type: 'upload',
-      relationTo: 'media',
-      required: true,
-    },
-    {
-      name: 'content',
-      type: 'blocks',
-      blocks: [NewsHeader, NewsText, NewsQuote, NewsList, NewsImage],
-    },
-
-    // ===== META =====
     {
       name: 'publishedAt',
       type: 'date',
       defaultValue: new Date(),
       required: true,
+      admin: {
+        position: 'sidebar',
+      },
     },
-
     {
       name: 'slug',
       type: 'text',
@@ -80,7 +65,6 @@ export const News: CollectionConfig<'news'> = {
       },
     },
   ],
-
   versions: {
     drafts: {
       autosave: {
