@@ -1769,23 +1769,57 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
  */
 export interface Header {
   id: number;
-  navItems?:
+  languageSelector?:
     | {
-        link: {
-          type?: ('reference' | 'custom') | null;
-          newTab?: boolean | null;
-          reference?:
-            | ({
-                relationTo: 'pages';
-                value: number | Page;
-              } | null)
-            | ({
-                relationTo: 'posts';
-                value: number | Post;
-              } | null);
-          url?: string | null;
-          label: string;
-        };
+        /**
+         * Kod języka np. PL, EN, DE
+         */
+        locale: string;
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  menus?:
+    | {
+        title: string;
+        links?:
+          | {
+              label: string;
+              type?: ('reference' | 'custom') | null;
+              reference?:
+                | ({
+                    relationTo: 'pages';
+                    value: number | Page;
+                  } | null)
+                | ({
+                    relationTo: 'news';
+                    value: number | News;
+                  } | null);
+              url?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        linkButtons?:
+          | {
+              label: string;
+              type?: ('reference' | 'custom') | null;
+              reference?:
+                | ({
+                    relationTo: 'pages';
+                    value: number | Page;
+                  } | null)
+                | ({
+                    relationTo: 'news';
+                    value: number | News;
+                  } | null);
+              url?: string | null;
+              /**
+               * Czy przycisk ma być wyróżniony
+               */
+              primary?: boolean | null;
+              id?: string | null;
+            }[]
+          | null;
         id?: string | null;
       }[]
     | null;
@@ -1858,17 +1892,35 @@ export interface FooterTimezones {
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
-  navItems?:
+  languageSelector?:
     | T
     | {
-        link?:
+        locale?: T;
+        label?: T;
+        id?: T;
+      };
+  menus?:
+    | T
+    | {
+        title?: T;
+        links?:
           | T
           | {
+              label?: T;
               type?: T;
-              newTab?: T;
               reference?: T;
               url?: T;
+              id?: T;
+            };
+        linkButtons?:
+          | T
+          | {
               label?: T;
+              type?: T;
+              reference?: T;
+              url?: T;
+              primary?: T;
+              id?: T;
             };
         id?: T;
       };

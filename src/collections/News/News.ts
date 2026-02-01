@@ -35,6 +35,7 @@ export const News: CollectionConfig<'news'> = {
       name: 'readingTime',
       type: 'number',
       required: true,
+      min: 1,
       admin: {
         description: 'Czas czytania w minutach',
       },
@@ -63,6 +64,7 @@ export const News: CollectionConfig<'news'> = {
     {
       name: 'publishedAt',
       type: 'date',
+      defaultValue: new Date(),
       required: true,
     },
 
