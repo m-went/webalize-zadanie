@@ -32,9 +32,16 @@ export const Integrations: CollectionConfig = {
             {
               name: 'category',
               type: 'relationship',
-              relationTo: 'integration-categories',
+              relationTo: 'categories',
               required: true,
               hasMany: true,
+              filterOptions: () => {
+                return {
+                  type: {
+                    equals: 'integrations',
+                  },
+                }
+              },
             },
             {
               name: 'excerpt',

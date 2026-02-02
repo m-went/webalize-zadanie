@@ -75,7 +75,6 @@ export interface Config {
     news: News;
     faq: Faq;
     integrations: Integration;
-    'integration-categories': IntegrationCategory;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -101,7 +100,6 @@ export interface Config {
     news: NewsSelect<false> | NewsSelect<true>;
     faq: FaqSelect<false> | FaqSelect<true>;
     integrations: IntegrationsSelect<false> | IntegrationsSelect<true>;
-    'integration-categories': IntegrationCategoriesSelect<false> | IntegrationCategoriesSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -222,7 +220,7 @@ export interface Page {
         /**
          * Select categories to show as filter buttons. Leave empty to show all.
          */
-        selectedCategories?: (number | IntegrationCategory)[] | null;
+        selectedCategories?: (number | Category)[] | null;
         limit?: number | null;
         selectedDocs?:
           | (
@@ -256,12 +254,13 @@ export interface Page {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "integration-categories".
+ * via the `definition` "categories".
  */
-export interface IntegrationCategory {
+export interface Category {
   id: number;
+  type: 'news' | 'integrations';
   /**
-   * Category name on button
+   * Category name
    */
   title: string;
   /**
@@ -322,6 +321,7 @@ export interface News {
     | null;
   excerpt: string;
   readingTime: number;
+  category: (number | Category)[];
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -462,7 +462,7 @@ export interface Integration {
   id: number;
   title: string;
   logo: number | Media;
-  category: (number | IntegrationCategory)[];
+  category: (number | Category)[];
   excerpt: string;
   content: {
     root: {
@@ -539,30 +539,6 @@ export interface Post {
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "categories".
- */
-export interface Category {
-  id: number;
-  title: string;
-  /**
-   * When enabled, the slug will auto-generate from the title field on save and autosave.
-   */
-  generateSlug?: boolean | null;
-  slug: string;
-  parent?: (number | null) | Category;
-  breadcrumbs?:
-    | {
-        doc?: (number | null) | Category;
-        url?: string | null;
-        label?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1038,10 +1014,6 @@ export interface PayloadLockedDocument {
         value: number | Integration;
       } | null)
     | ({
-        relationTo: 'integration-categories';
-        value: number | IntegrationCategory;
-      } | null)
-    | ({
         relationTo: 'redirects';
         value: number | Redirect;
       } | null)
@@ -1293,18 +1265,9 @@ export interface MediaSelect<T extends boolean = true> {
  * via the `definition` "categories_select".
  */
 export interface CategoriesSelect<T extends boolean = true> {
+  type?: T;
   title?: T;
-  generateSlug?: T;
-  slug?: T;
-  parent?: T;
-  breadcrumbs?:
-    | T
-    | {
-        doc?: T;
-        url?: T;
-        label?: T;
-        id?: T;
-      };
+  excerpt?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1388,6 +1351,7 @@ export interface NewsSelect<T extends boolean = true> {
       };
   excerpt?: T;
   readingTime?: T;
+  category?: T;
   meta?:
     | T
     | {
@@ -1441,16 +1405,6 @@ export interface IntegrationsSelect<T extends boolean = true> {
         description?: T;
       };
   slug?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "integration-categories_select".
- */
-export interface IntegrationCategoriesSelect<T extends boolean = true> {
-  title?: T;
-  excerpt?: T;
   updatedAt?: T;
   createdAt?: T;
 }

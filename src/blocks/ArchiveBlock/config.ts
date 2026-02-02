@@ -32,12 +32,11 @@ export const Archive: Block = {
     {
       name: 'selectedCategories',
       type: 'relationship',
-      relationTo: 'integration-categories',
+      relationTo: 'categories',
       label: 'Selected categories',
       hasMany: true,
       admin: {
         description: 'Select categories to show as filter buttons. Leave empty to show all.',
-        condition: (_, siblingData) => siblingData.relationTo === 'integrations',
       },
     },
     {

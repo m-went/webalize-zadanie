@@ -1,8 +1,8 @@
-import { NewsHeader } from '@/blocks/News/NewsHeader'
-import { NewsImage } from '@/blocks/News/NewsImage'
-import { NewsList } from '@/blocks/News/NewsList'
-import { NewsQuote } from '@/blocks/News/NewsQuote'
-import { NewsText } from '@/blocks/News/NewsText'
+import { NewsHeader } from '@/blocks/News/NewsHeader/config'
+import { NewsImage } from '@/blocks/News/NewsImage/config'
+import { NewsList } from '@/blocks/News/NewsList/config'
+import { NewsQuote } from '@/blocks/News/NewsQuote/config'
+import { NewsText } from '@/blocks/News/NewsText/config'
 import { seoTab } from '@/fields/seoTab'
 import { type CollectionConfig } from 'payload'
 
@@ -39,6 +39,20 @@ export const News: CollectionConfig<'news'> = {
           fields: [
             { name: 'excerpt', type: 'textarea', required: true, localized: true },
             { name: 'readingTime', type: 'number', required: true },
+            {
+              name: 'category',
+              type: 'relationship',
+              relationTo: 'categories',
+              required: true,
+              hasMany: true,
+              filterOptions: () => {
+                return {
+                  type: {
+                    equals: 'news',
+                  },
+                }
+              },
+            },
           ],
         },
         seoTab,

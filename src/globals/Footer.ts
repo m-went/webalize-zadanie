@@ -1,8 +1,7 @@
+import { FooterCompanyInfo } from '@/blocks/Footer/FooterCompanyInfo/config'
+import { FooterLinks } from '@/blocks/Footer/FooterLinks/config'
+import { FooterTimezones } from '@/blocks/Footer/FooterTimezones/config'
 import type { GlobalConfig } from 'payload'
-
-import { FooterCompanyInfo } from '@/blocks/Footer/FooterCompanyInfo'
-import { FooterLinks } from '@/blocks/Footer/FooterLinks'
-import { FooterTimezones } from '@/blocks/Footer/FooterTimezones'
 
 export const Footer: GlobalConfig = {
   slug: 'footer',

@@ -3,8 +3,8 @@ import type { Block } from 'payload'
 export const NewsText: Block = {
   slug: 'newsText',
   labels: {
-    singular: 'Tekst',
-    plural: 'Teksts',
+    singular: 'Text',
+    plural: 'Tekxts',
   },
   fields: [
     {

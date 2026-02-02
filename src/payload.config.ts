@@ -3,7 +3,7 @@ import sharp from 'sharp'
 import path from 'path'
 import { buildConfig, PayloadRequest } from 'payload'
 import { fileURLToPath } from 'url'
-import { Categories } from './collections/Categories'
+
 import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
@@ -12,11 +12,11 @@ import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
 import { Footer } from './globals/Footer'
-import { News } from './collections/News/News'
+import { News } from './collections/News'
 import { Header } from './globals/Header'
-import { Faq } from './collections/Faq/Faq'
-import { Integrations } from './collections/Integrations/Integrations'
-import { IntegrationCategories } from './collections/IntegrationCategories/IntegrationCategories'
+import { Faq } from './collections/Faq'
+import { Integrations } from './collections/Integrations'
+import { Categories } from './collections/Categories'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -65,17 +65,7 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URL || '',
     },
   }),
-  collections: [
-    Pages,
-    Posts,
-    Media,
-    Categories,
-    Users,
-    News,
-    Faq,
-    Integrations,
-    IntegrationCategories,
-  ],
+  collections: [Pages, Posts, Media, Categories, Users, News, Faq, Integrations],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],
   plugins,
