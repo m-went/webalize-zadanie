@@ -1,3 +1,5 @@
+import { anyone } from '@/access/anyone'
+import { authenticated } from '@/access/authenticated'
 import { NewsHeader } from '@/blocks/News/NewsHeader/config'
 import { NewsImage } from '@/blocks/News/NewsImage/config'
 import { NewsList } from '@/blocks/News/NewsList/config'
@@ -13,11 +15,12 @@ export const News: CollectionConfig<'news'> = {
     useAsTitle: 'title',
     defaultColumns: ['title', 'publishedAt'],
   },
-
   access: {
-    read: () => true,
+    create: authenticated,
+    delete: authenticated,
+    read: anyone,
+    update: authenticated,
   },
-
   fields: [
     {
       type: 'tabs',

@@ -1,3 +1,5 @@
+import { anyone } from '@/access/anyone'
+import { authenticated } from '@/access/authenticated'
 import { seoTab } from '@/fields/seoTab'
 import type { CollectionConfig } from 'payload'
 
@@ -8,7 +10,10 @@ export const Integrations: CollectionConfig = {
     defaultColumns: ['title', 'category', 'updatedAt'],
   },
   access: {
-    read: () => true,
+    create: authenticated,
+    delete: authenticated,
+    read: anyone,
+    update: authenticated,
   },
   fields: [
     {

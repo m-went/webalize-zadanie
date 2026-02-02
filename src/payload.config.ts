@@ -6,7 +6,6 @@ import { fileURLToPath } from 'url'
 
 import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
-import { Posts } from './collections/Posts'
 import { Users } from './collections/Users'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
@@ -17,6 +16,8 @@ import { Header } from './globals/Header'
 import { Faq } from './collections/Faq'
 import { Integrations } from './collections/Integrations'
 import { Categories } from './collections/Categories'
+import { locales } from './constants/locales'
+import { Posts } from './collections/Posts'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -65,7 +66,7 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URL || '',
     },
   }),
-  collections: [Pages, Posts, Media, Categories, Users, News, Faq, Integrations],
+  collections: [Pages, Media, Posts, Categories, Users, News, Faq, Integrations],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],
   plugins,
@@ -75,12 +76,8 @@ export default buildConfig({
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
   localization: {
-    locales: [
-      { code: 'en', label: 'English' },
-      { code: 'pl', label: 'Polski' },
-      { code: 'de', label: 'Deutsh' },
-    ],
-    defaultLocale: 'pl',
+    locales,
+    defaultLocale: locales[0].code,
     fallback: true,
   },
   jobs: {

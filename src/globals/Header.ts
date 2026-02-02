@@ -1,9 +1,13 @@
+import { anyone } from '@/access/anyone'
+import { authenticated } from '@/access/authenticated'
+import { locales } from '@/constants/locales'
 import type { GlobalConfig } from 'payload'
 
 export const Header: GlobalConfig = {
   slug: 'header',
   access: {
-    read: () => true,
+    read: anyone,
+    update: authenticated,
   },
   fields: [
     {
@@ -12,11 +16,9 @@ export const Header: GlobalConfig = {
       fields: [
         {
           name: 'locale',
-          type: 'text',
+          type: 'select',
           required: true,
-          admin: {
-            description: 'Language code ex. PL, EN, DE',
-          },
+          options: locales.map((l) => ({ label: l.label, value: l.code })),
         },
         {
           name: 'label',
