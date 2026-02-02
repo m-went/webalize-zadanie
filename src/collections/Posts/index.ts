@@ -10,6 +10,7 @@ import { PostText } from '@/blocks/Posts/PostText/config'
 import { PostQuote } from '@/blocks/Posts/PostQuote/config'
 import { PostList } from '@/blocks/Posts/PostList/config'
 import { PostImage } from '@/blocks/Posts/PostImage/config'
+import { formatSlug } from '@/utilities/formatSlug'
 
 export const Posts: CollectionConfig<'posts'> = {
   slug: 'posts',
@@ -180,6 +181,9 @@ export const Posts: CollectionConfig<'posts'> = {
       admin: {
         position: 'sidebar',
         description: 'Used in the URL, e.g., /news/my-article',
+      },
+      hooks: {
+        beforeValidate: [formatSlug('title')],
       },
     },
   ],

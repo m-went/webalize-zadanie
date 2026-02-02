@@ -8,6 +8,7 @@ import { revalidateDelete, revalidatePage } from './hooks/revalidatePage'
 import { Faq } from '@/blocks/Faq/config'
 import { seoTab } from '@/fields/seoTab'
 import { Archive } from '@/blocks/ArchiveBlock/config'
+import { formatSlug } from '@/utilities/formatSlug'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
@@ -64,6 +65,9 @@ export const Pages: CollectionConfig<'pages'> = {
       admin: {
         position: 'sidebar',
         description: 'Used in the URL, e.g., /news/my-article',
+      },
+      hooks: {
+        beforeValidate: [formatSlug('title')],
       },
     },
   ],

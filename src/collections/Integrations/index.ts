@@ -1,6 +1,7 @@
 import { anyone } from '@/access/anyone'
 import { authenticated } from '@/access/authenticated'
 import { seoTab } from '@/fields/seoTab'
+import { formatSlug } from '@/utilities/formatSlug'
 import type { CollectionConfig } from 'payload'
 
 export const Integrations: CollectionConfig = {
@@ -74,6 +75,9 @@ export const Integrations: CollectionConfig = {
       admin: {
         position: 'sidebar',
         description: 'Used in the URL, e.g., /news/my-article',
+      },
+      hooks: {
+        beforeValidate: [formatSlug('title')],
       },
     },
   ],
