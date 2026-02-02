@@ -247,7 +247,7 @@ export interface Page {
   };
   publishedAt?: string | null;
   /**
-   * Używany w URL, np. /news/moj-artykul
+   * Used in the URL, e.g., /news/my-article
    */
   slug: string;
   updatedAt: string;
@@ -261,11 +261,11 @@ export interface Page {
 export interface IntegrationCategory {
   id: number;
   /**
-   * Nazwa kategorii na przycisku
+   * Category name on button
    */
   title: string;
   /**
-   * Krótki opis kategorii
+   * Short category description
    */
   excerpt?: string | null;
   updatedAt: string;
@@ -328,7 +328,7 @@ export interface News {
   };
   publishedAt: string;
   /**
-   * Używany w URL, np. /news/moj-artykul
+   * Used in the URL, e.g., /news/my-article
    */
   slug: string;
   updatedAt: string;
@@ -484,7 +484,7 @@ export interface Integration {
     description?: string | null;
   };
   /**
-   * Używany w URL, np. /news/moj-artykul
+   * Used in the URL, e.g., /news/my-article
    */
   slug: string;
   updatedAt: string;
@@ -1755,7 +1755,7 @@ export interface Header {
   languageSelector?:
     | {
         /**
-         * Kod języka np. PL, EN, DE
+         * Language code ex. PL, EN, DE
          */
         locale: string;
         label: string;
@@ -1797,7 +1797,7 @@ export interface Header {
                   } | null);
               url?: string | null;
               /**
-               * Czy przycisk ma być wyróżniony
+               * Should be highlighted?
                */
               primary?: boolean | null;
               id?: string | null;

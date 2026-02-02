@@ -22,6 +22,7 @@ export const Header: GlobalConfig = {
           name: 'label',
           type: 'text',
           required: true,
+          localized: true,
         },
       ],
       maxRows: 1,

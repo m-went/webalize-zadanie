@@ -25,6 +25,7 @@ export const NewsList: Block = {
           name: 'text',
           type: 'text',
           required: true,
+          localized: true,
         },
       ],
     },

@@ -16,6 +16,7 @@ export const NewsImage: Block = {
     {
       name: 'caption',
       type: 'text',
+      localized: true,
     },
   ],
 }

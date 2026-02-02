@@ -11,11 +11,13 @@ export const NewsQuote: Block = {
       name: 'quote',
       type: 'textarea',
       required: true,
+      localized: true,
     },
     {
       name: 'author',
       type: 'text',
       required: true,
+      localized: true,
     },
   ],
 }

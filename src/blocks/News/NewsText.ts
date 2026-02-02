@@ -11,6 +11,7 @@ export const NewsText: Block = {
       name: 'content',
       type: 'textarea',
       required: true,
+      localized: true,
     },
   ],
 }
