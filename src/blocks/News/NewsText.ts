@@ -4,7 +4,7 @@ export const NewsText: Block = {
   slug: 'newsText',
   labels: {
     singular: 'Tekst',
-    plural: 'Teksty',
+    plural: 'Teksts',
   },
   fields: [
     {

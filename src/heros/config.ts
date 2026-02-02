@@ -32,7 +32,7 @@ export const hero: Field = {
       name: 'showSearch',
       type: 'checkbox',
       defaultValue: false,
-      label: 'Pokaż wyszukiwarkę',
+      label: 'Show searchbar',
     },
   ],
   label: false,

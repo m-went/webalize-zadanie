@@ -23,13 +23,13 @@ export const Faq: CollectionConfig = {
       type: 'array',
       required: true,
       labels: {
-        singular: 'Kategoria',
-        plural: 'Kategorie',
+        singular: 'Category',
+        plural: 'Categories',
       },
       fields: [
         {
           name: 'categoryName',
-          label: 'Nazwa kategorii',
+          label: 'Category name',
           type: 'text',
           required: true,
           localized: true,
@@ -37,29 +37,29 @@ export const Faq: CollectionConfig = {
         },
         {
           name: 'categoryDescription',
-          label: 'Opis kategorii',
+          label: 'Category Description',
           type: 'textarea',
           localized: true,
         },
         {
           name: 'questions',
-          label: 'Pytania i odpowiedzi',
+          label: 'Questions',
           type: 'array',
           labels: {
-            singular: 'Pytanie',
-            plural: 'Pytania',
+            singular: 'Question',
+            plural: 'Questions',
           },
           fields: [
             {
               name: 'question',
-              label: 'Pytanie',
+              label: 'Question',
               type: 'text',
               required: true,
               localized: true,
             },
             {
               name: 'answer',
-              label: 'Odpowiedź',
+              label: 'Answer',
               type: 'richText',
               required: true,
               localized: true,

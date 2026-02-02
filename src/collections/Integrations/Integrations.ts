@@ -15,7 +15,7 @@ export const Integrations: CollectionConfig = {
       type: 'tabs',
       tabs: [
         {
-          label: 'Treść',
+          label: 'Content',
           fields: [
             {
               name: 'title',
@@ -61,7 +61,7 @@ export const Integrations: CollectionConfig = {
       localized: true,
       admin: {
         position: 'sidebar',
-        description: 'Używany w URL, np. /news/moj-artykul',
+        description: 'Used in the URL, e.g., /news/my-article',
       },
     },
   ],

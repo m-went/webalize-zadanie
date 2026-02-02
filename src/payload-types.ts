@@ -220,7 +220,7 @@ export interface Page {
         populateBy?: ('collection' | 'selection') | null;
         relationTo?: ('news' | 'integrations') | null;
         /**
-         * Wybierz kategorie, które mają pojawić się jako przyciski filtrów. Zostaw puste, aby pokazać wszystkie.
+         * Select categories to show as filter buttons. Leave empty to show all.
          */
         selectedCategories?: (number | IntegrationCategory)[] | null;
         limit?: number | null;
@@ -765,6 +765,21 @@ export interface Form {
             id?: string | null;
             blockName?: string | null;
             blockType: 'textarea';
+          }
+        | {
+            label: string;
+            numberRequired?: boolean | null;
+            prefixRequired?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'phoneWithPrefix';
+          }
+        | {
+            label: string;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'appointmentPicker';
           }
       )[]
     | null;
@@ -1564,6 +1579,23 @@ export interface FormsSelect<T extends boolean = true> {
               id?: T;
               blockName?: T;
             };
+        phoneWithPrefix?:
+          | T
+          | {
+              label?: T;
+              numberRequired?: T;
+              prefixRequired?: T;
+              id?: T;
+              blockName?: T;
+            };
+        appointmentPicker?:
+          | T
+          | {
+              label?: T;
+              required?: T;
+              id?: T;
+              blockName?: T;
+            };
       };
   submitButtonLabel?: T;
   confirmationType?: T;
@@ -1790,7 +1822,17 @@ export interface Footer {
             links?:
               | {
                   label: string;
-                  url: string;
+                  type?: ('reference' | 'custom') | null;
+                  reference?:
+                    | ({
+                        relationTo: 'pages';
+                        value: number | Page;
+                      } | null)
+                    | ({
+                        relationTo: 'news';
+                        value: number | News;
+                      } | null);
+                  url?: string | null;
                   id?: string | null;
                 }[]
               | null;
@@ -1895,6 +1937,8 @@ export interface FooterSelect<T extends boolean = true> {
                 | T
                 | {
                     label?: T;
+                    type?: T;
+                    reference?: T;
                     url?: T;
                     id?: T;
                   };

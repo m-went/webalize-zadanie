@@ -4,8 +4,8 @@ import type { Block } from 'payload'
 export const Faq: Block = {
   slug: 'faqBlock',
   labels: {
-    singular: 'Sekcja FAQ',
-    plural: 'Sekcje FAQ',
+    singular: 'FAQ section',
+    plural: 'FAQ sections ',
   },
   fields: [
     {

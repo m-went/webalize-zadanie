@@ -14,13 +14,13 @@ export const IntegrationCategories: CollectionConfig = {
       type: 'text',
       required: true,
       localized: true,
-      admin: { description: 'Nazwa kategorii na przycisku' },
+      admin: { description: 'Category name on button' },
     },
     {
       name: 'excerpt',
       type: 'textarea',
       localized: true,
-      admin: { description: 'Krótki opis kategorii' },
+      admin: { description: 'Short category description' },
     },
   ],
 }

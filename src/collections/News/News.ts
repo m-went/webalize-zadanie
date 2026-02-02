@@ -23,7 +23,7 @@ export const News: CollectionConfig<'news'> = {
       type: 'tabs',
       tabs: [
         {
-          label: 'Treść Newsa',
+          label: 'News content',
           fields: [
             { name: 'title', type: 'text', required: true, localized: true },
             { name: 'heroImage', type: 'upload', relationTo: 'media', required: true },
@@ -35,7 +35,7 @@ export const News: CollectionConfig<'news'> = {
           ],
         },
         {
-          label: 'Widok listy',
+          label: 'List view',
           fields: [
             { name: 'excerpt', type: 'textarea', required: true, localized: true },
             { name: 'readingTime', type: 'number', required: true },
@@ -61,7 +61,7 @@ export const News: CollectionConfig<'news'> = {
       localized: true,
       admin: {
         position: 'sidebar',
-        description: 'Używany w URL, np. /news/moj-artykul',
+        description: 'Used in the URL, e.g., /news/my-article',
       },
     },
   ],

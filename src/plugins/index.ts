@@ -57,6 +57,63 @@ export const plugins: Plugin[] = [
   formBuilderPlugin({
     fields: {
       payment: false,
+      phoneWithPrefix: {
+        slug: 'phoneWithPrefix',
+        labels: {
+          singular: 'Phone number',
+          plural: 'Phone numbers',
+        },
+        fields: [
+          {
+            name: 'label',
+            type: 'text',
+            label: 'Label',
+            required: true,
+            localized: true,
+          },
+          {
+            type: 'row',
+            fields: [
+              {
+                name: 'numberRequired',
+                type: 'checkbox',
+                label: 'Numer required',
+                defaultValue: true,
+              },
+              {
+                name: 'prefixRequired',
+                type: 'checkbox',
+                label: 'Prefix required',
+                defaultValue: true,
+                admin: {
+                  condition: (_, siblingData) => siblingData?.numberRequired,
+                },
+              },
+            ],
+          },
+        ],
+      },
+      appointmentPicker: {
+        slug: 'appointmentPicker',
+        labels: {
+          singular: 'Calendar',
+          plural: 'Calendars',
+        },
+        fields: [
+          {
+            name: 'label',
+            type: 'text',
+            label: 'Label',
+            required: true,
+            localized: true,
+          },
+          {
+            name: 'required',
+            type: 'checkbox',
+            label: 'Required?',
+          },
+        ],
+      },
     },
     formOverrides: {
       fields: ({ defaultFields }) => {

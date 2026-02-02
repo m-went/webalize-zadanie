@@ -3,8 +3,8 @@ import type { Block } from 'payload'
 export const NewsList: Block = {
   slug: 'newsList',
   labels: {
-    singular: 'Lista',
-    plural: 'Listy',
+    singular: 'List',
+    plural: 'Lists',
   },
   fields: [
     {
@@ -12,8 +12,8 @@ export const NewsList: Block = {
       type: 'select',
       required: true,
       options: [
-        { label: 'Numerowana', value: 'ordered' },
-        { label: 'Punktowana', value: 'unordered' },
+        { label: 'Ordered', value: 'ordered' },
+        { label: 'Unordered', value: 'unordered' },
       ],
     },
     {

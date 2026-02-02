@@ -15,7 +15,7 @@ export const Header: GlobalConfig = {
           type: 'text',
           required: true,
           admin: {
-            description: 'Kod języka np. PL, EN, DE',
+            description: 'Language code ex. PL, EN, DE',
           },
         },
         {
@@ -31,7 +31,7 @@ export const Header: GlobalConfig = {
       type: 'array',
       labels: {
         singular: 'Menu',
-        plural: 'Menu',
+        plural: 'Menus',
       },
       fields: [
         {
@@ -59,8 +59,8 @@ export const Header: GlobalConfig = {
                   type: 'select',
                   defaultValue: 'reference',
                   options: [
-                    { label: 'Wewnętrzny (Strona)', value: 'reference' },
-                    { label: 'Zewnętrzny (URL)', value: 'custom' },
+                    { label: 'Internal (Page)', value: 'reference' },
+                    { label: 'External (URL)', value: 'custom' },
                   ],
                   admin: { width: '33%' },
                 },
@@ -106,8 +106,8 @@ export const Header: GlobalConfig = {
                   type: 'select',
                   defaultValue: 'reference',
                   options: [
-                    { label: 'Wewnętrzny (Strona)', value: 'reference' },
-                    { label: 'Zewnętrzny (URL)', value: 'custom' },
+                    { label: 'Internal (Page)', value: 'reference' },
+                    { label: 'External (URL)', value: 'custom' },
                   ],
                   admin: { width: '33%' },
                 },
@@ -137,7 +137,7 @@ export const Header: GlobalConfig = {
               type: 'checkbox',
               defaultValue: false,
               admin: {
-                description: 'Czy przycisk ma być wyróżniony',
+                description: 'Should be highlighted?',
               },
             },
           ],

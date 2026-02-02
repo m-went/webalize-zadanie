@@ -63,7 +63,7 @@ export const Pages: CollectionConfig<'pages'> = {
       localized: true,
       admin: {
         position: 'sidebar',
-        description: 'Używany w URL, np. /news/moj-artykul',
+        description: 'Used in the URL, e.g., /news/my-article',
       },
     },
   ],

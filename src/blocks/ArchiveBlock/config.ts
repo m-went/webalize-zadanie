@@ -12,18 +12,18 @@ export const Archive: Block = {
       type: 'select',
       defaultValue: 'collection',
       options: [
-        { label: 'Kolekcja', value: 'collection' },
-        { label: 'Ręczny wybór', value: 'selection' },
+        { label: 'Collection', value: 'collection' },
+        { label: 'Picker', value: 'selection' },
       ],
     },
     {
       name: 'relationTo',
       type: 'select',
       defaultValue: 'news',
-      label: 'Wybierz kolekcję do wyświetlenia',
+      label: 'Select collection to show',
       options: [
-        { label: 'Newsy', value: 'news' },
-        { label: 'Integracje', value: 'integrations' },
+        { label: 'News', value: 'news' },
+        { label: 'Integrations', value: 'integrations' },
       ],
       admin: {
         condition: (_, siblingData) => siblingData.populateBy === 'collection',
@@ -33,11 +33,10 @@ export const Archive: Block = {
       name: 'selectedCategories',
       type: 'relationship',
       relationTo: 'integration-categories',
-      label: 'Wyświetlane Kategorie',
+      label: 'Selected categories',
       hasMany: true,
       admin: {
-        description:
-          'Wybierz kategorie, które mają pojawić się jako przyciski filtrów. Zostaw puste, aby pokazać wszystkie.',
+        description: 'Select categories to show as filter buttons. Leave empty to show all.',
         condition: (_, siblingData) => siblingData.relationTo === 'integrations',
       },
     },
@@ -45,7 +44,7 @@ export const Archive: Block = {
       name: 'limit',
       type: 'number',
       defaultValue: 10,
-      label: 'Ilość elementów na start',
+      label: 'Number of elements',
     },
 
     {
