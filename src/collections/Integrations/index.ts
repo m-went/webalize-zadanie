@@ -9,6 +9,7 @@ export const Integrations: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'category', 'updatedAt'],
+    group: 'Content',
   },
   access: {
     create: authenticated,

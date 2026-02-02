@@ -5,6 +5,7 @@ import type { CollectionConfig } from 'payload'
 export const Faq: CollectionConfig = {
   slug: 'faq',
   admin: {
+    group: 'Content',
     useAsTitle: 'title',
   },
   access: {
