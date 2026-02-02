@@ -1,10 +1,10 @@
 import type { Block } from 'payload'
 
-export const NewsText: Block = {
-  slug: 'newsText',
+export const PostText: Block = {
+  slug: 'postText',
   labels: {
     singular: 'Text',
-    plural: 'Tekxts',
+    plural: 'Texts',
   },
   fields: [
     {

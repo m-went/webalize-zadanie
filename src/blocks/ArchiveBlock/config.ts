@@ -19,10 +19,10 @@ export const Archive: Block = {
     {
       name: 'relationTo',
       type: 'select',
-      defaultValue: 'news',
+      defaultValue: 'posts',
       label: 'Select collection to show',
       options: [
-        { label: 'News', value: 'news' },
+        { label: 'Posts', value: 'posts' },
         { label: 'Integrations', value: 'integrations' },
       ],
       admin: {
@@ -49,7 +49,7 @@ export const Archive: Block = {
     {
       name: 'selectedDocs',
       type: 'relationship',
-      relationTo: ['news', 'integrations'],
+      relationTo: ['posts', 'integrations'],
       hasMany: true,
       admin: {
         condition: (_, siblingData) => siblingData.populateBy === 'selection',

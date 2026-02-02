@@ -1,7 +1,7 @@
 import type { Block } from 'payload'
 
-export const NewsQuote: Block = {
-  slug: 'newsQuote',
+export const PostQuote: Block = {
+  slug: 'postQuote',
   labels: {
     singular: 'Quote',
     plural: 'Quotes',

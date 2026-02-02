@@ -1,31 +1,15 @@
 import type { CollectionConfig } from 'payload'
-
-import {
-  BlocksFeature,
-  FixedToolbarFeature,
-  HeadingFeature,
-  HorizontalRuleFeature,
-  InlineToolbarFeature,
-  lexicalEditor,
-} from '@payloadcms/richtext-lexical'
-
 import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
-import { Banner } from '../../blocks/Banner/config'
-import { Code } from '../../blocks/Code/config'
-import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { populateAuthors } from './hooks/populateAuthors'
 import { revalidateDelete, revalidatePost } from './hooks/revalidatePost'
-
-import {
-  MetaDescriptionField,
-  MetaImageField,
-  MetaTitleField,
-  OverviewField,
-  PreviewField,
-} from '@payloadcms/plugin-seo/fields'
-import { slugField } from 'payload'
+import { seoTab } from '@/fields/seoTab'
+import { PostHeader } from '@/blocks/Posts/PostHeader/config'
+import { PostText } from '@/blocks/Posts/PostText/config'
+import { PostQuote } from '@/blocks/Posts/PostQuote/config'
+import { PostList } from '@/blocks/Posts/PostList/config'
+import { PostImage } from '@/blocks/Posts/PostImage/config'
 
 export const Posts: CollectionConfig<'posts'> = {
   slug: 'posts',
@@ -48,7 +32,7 @@ export const Posts: CollectionConfig<'posts'> = {
     },
   },
   admin: {
-    defaultColumns: ['title', 'slug', 'updatedAt'],
+    defaultColumns: ['title', 'publishedAt'],
     livePreview: {
       url: ({ data, req }) =>
         generatePreviewPath({
@@ -76,31 +60,21 @@ export const Posts: CollectionConfig<'posts'> = {
       tabs: [
         {
           fields: [
-            {
-              name: 'heroImage',
-              type: 'upload',
-              relationTo: 'media',
-            },
+            { name: 'heroImage', type: 'upload', relationTo: 'media' },
             {
               name: 'content',
-              type: 'richText',
-              editor: lexicalEditor({
-                features: ({ rootFeatures }) => {
-                  return [
-                    ...rootFeatures,
-                    HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
-                    BlocksFeature({ blocks: [Banner, Code, MediaBlock] }),
-                    FixedToolbarFeature(),
-                    InlineToolbarFeature(),
-                    HorizontalRuleFeature(),
-                  ]
-                },
-              }),
-              label: false,
-              required: true,
+              type: 'blocks',
+              blocks: [PostHeader, PostText, PostQuote, PostList, PostImage],
             },
           ],
           label: 'Content',
+        },
+        {
+          label: 'List view',
+          fields: [
+            { name: 'excerpt', type: 'textarea', localized: true },
+            { name: 'readingTime', type: 'number' },
+          ],
         },
         {
           fields: [
@@ -121,49 +95,31 @@ export const Posts: CollectionConfig<'posts'> = {
               relationTo: 'posts',
             },
             {
-              name: 'categories',
+              name: 'category',
               type: 'relationship',
+              relationTo: 'categories',
               admin: {
                 position: 'sidebar',
               },
               hasMany: true,
-              relationTo: 'categories',
+              filterOptions: () => {
+                return {
+                  type: {
+                    equals: 'posts',
+                  },
+                }
+              },
             },
           ],
           label: 'Meta',
         },
-        {
-          name: 'meta',
-          label: 'SEO',
-          fields: [
-            OverviewField({
-              titlePath: 'meta.title',
-              descriptionPath: 'meta.description',
-              imagePath: 'meta.image',
-            }),
-            MetaTitleField({
-              hasGenerateFn: true,
-            }),
-            MetaImageField({
-              relationTo: 'media',
-            }),
-
-            MetaDescriptionField({}),
-            PreviewField({
-              // if the `generateUrl` function is configured
-              hasGenerateFn: true,
-
-              // field paths to match the target field for data
-              titlePath: 'meta.title',
-              descriptionPath: 'meta.description',
-            }),
-          ],
-        },
+        seoTab,
       ],
     },
     {
       name: 'publishedAt',
       type: 'date',
+      defaultValue: () => new Date(),
       admin: {
         date: {
           pickerAppearance: 'dayAndTime',
@@ -190,6 +146,7 @@ export const Posts: CollectionConfig<'posts'> = {
       hasMany: true,
       relationTo: 'users',
     },
+
     // This field is only used to populate the user data via the `populateAuthors` hook
     // This is because the `user` collection has access control locked to protect user privacy
     // GraphQL will also not return mutated user data that differs from the underlying schema
@@ -214,7 +171,17 @@ export const Posts: CollectionConfig<'posts'> = {
         },
       ],
     },
-    slugField(),
+    {
+      name: 'slug',
+      type: 'text',
+      required: true,
+      unique: true,
+      localized: true,
+      admin: {
+        position: 'sidebar',
+        description: 'Used in the URL, e.g., /news/my-article',
+      },
+    },
   ],
   hooks: {
     afterChange: [revalidatePost],

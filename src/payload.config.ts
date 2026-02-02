@@ -11,7 +11,6 @@ import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
 import { Footer } from './globals/Footer'
-import { News } from './collections/News'
 import { Header } from './globals/Header'
 import { Faq } from './collections/Faq'
 import { Integrations } from './collections/Integrations'
@@ -66,7 +65,7 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URL || '',
     },
   }),
-  collections: [Pages, Media, Posts, Categories, Users, News, Faq, Integrations],
+  collections: [Pages, Media, Posts, Categories, Users, Faq, Integrations],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],
   plugins,

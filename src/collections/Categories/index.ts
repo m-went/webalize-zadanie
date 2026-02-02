@@ -20,7 +20,7 @@ export const Categories: CollectionConfig = {
       type: 'select',
       required: true,
       options: [
-        { label: 'News', value: 'news' },
+        { label: 'Posts', value: 'posts' },
         { label: 'Integrations', value: 'integrations' },
       ],
       admin: {

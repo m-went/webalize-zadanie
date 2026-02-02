@@ -34,7 +34,7 @@ export const FooterLinks: Block = {
             {
               name: 'reference',
               type: 'relationship',
-              relationTo: ['pages', 'news'],
+              relationTo: ['pages', 'posts'],
               required: true,
               admin: {
                 condition: (_, siblingData) => siblingData?.type === 'reference',

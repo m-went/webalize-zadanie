@@ -72,7 +72,6 @@ export interface Config {
     posts: Post;
     categories: Category;
     users: User;
-    news: News;
     faq: Faq;
     integrations: Integration;
     redirects: Redirect;
@@ -97,7 +96,6 @@ export interface Config {
     posts: PostsSelect<false> | PostsSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
-    news: NewsSelect<false> | NewsSelect<true>;
     faq: FaqSelect<false> | FaqSelect<true>;
     integrations: IntegrationsSelect<false> | IntegrationsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
@@ -216,7 +214,7 @@ export interface Page {
       }
     | {
         populateBy?: ('collection' | 'selection') | null;
-        relationTo?: ('news' | 'integrations') | null;
+        relationTo?: ('posts' | 'integrations') | null;
         /**
          * Select categories to show as filter buttons. Leave empty to show all.
          */
@@ -225,8 +223,8 @@ export interface Page {
         selectedDocs?:
           | (
               | {
-                  relationTo: 'news';
-                  value: number | News;
+                  relationTo: 'posts';
+                  value: number | Post;
                 }
               | {
                   relationTo: 'integrations';
@@ -258,7 +256,7 @@ export interface Page {
  */
 export interface Category {
   id: number;
-  type: 'news' | 'integrations';
+  type: 'posts' | 'integrations';
   /**
    * Category name
    */
@@ -272,12 +270,12 @@ export interface Category {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "news".
+ * via the `definition` "posts".
  */
-export interface News {
+export interface Post {
   id: number;
   title: string;
-  heroImage: number | Media;
+  heroImage?: (number | null) | Media;
   content?:
     | (
         | {
@@ -285,20 +283,20 @@ export interface News {
             text: string;
             id?: string | null;
             blockName?: string | null;
-            blockType: 'newsHeader';
+            blockType: 'postHeader';
           }
         | {
             content: string;
             id?: string | null;
             blockName?: string | null;
-            blockType: 'newsText';
+            blockType: 'postText';
           }
         | {
             quote: string;
             author: string;
             id?: string | null;
             blockName?: string | null;
-            blockType: 'newsQuote';
+            blockType: 'postQuote';
           }
         | {
             type: 'ordered' | 'unordered';
@@ -308,25 +306,33 @@ export interface News {
             }[];
             id?: string | null;
             blockName?: string | null;
-            blockType: 'newsList';
+            blockType: 'postList';
           }
         | {
             image: number | Media;
             caption?: string | null;
             id?: string | null;
             blockName?: string | null;
-            blockType: 'newsImage';
+            blockType: 'postImage';
           }
       )[]
     | null;
-  excerpt: string;
-  readingTime: number;
-  category: (number | Category)[];
+  excerpt?: string | null;
+  readingTime?: number | null;
+  relatedPosts?: (number | Post)[] | null;
+  category?: (number | Category)[] | null;
   meta?: {
     title?: string | null;
     description?: string | null;
   };
-  publishedAt: string;
+  publishedAt?: string | null;
+  authors?: (number | User)[] | null;
+  populatedAuthors?:
+    | {
+        id?: string | null;
+        name?: string | null;
+      }[]
+    | null;
   /**
    * Used in the URL, e.g., /news/my-article
    */
@@ -456,6 +462,31 @@ export interface FolderInterface {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users".
+ */
+export interface User {
+  id: number;
+  name?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  email: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
+  sessions?:
+    | {
+        id: string;
+        createdAt?: string | null;
+        expiresAt: string;
+      }[]
+    | null;
+  password?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "integrations".
  */
 export interface Integration {
@@ -489,81 +520,6 @@ export interface Integration {
   slug: string;
   updatedAt: string;
   createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "posts".
- */
-export interface Post {
-  id: number;
-  title: string;
-  heroImage?: (number | null) | Media;
-  content: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  relatedPosts?: (number | Post)[] | null;
-  categories?: (number | Category)[] | null;
-  meta?: {
-    title?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (number | null) | Media;
-    description?: string | null;
-  };
-  publishedAt?: string | null;
-  authors?: (number | User)[] | null;
-  populatedAuthors?:
-    | {
-        id?: string | null;
-        name?: string | null;
-      }[]
-    | null;
-  /**
-   * When enabled, the slug will auto-generate from the title field on save and autosave.
-   */
-  generateSlug?: boolean | null;
-  slug: string;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users".
- */
-export interface User {
-  id: number;
-  name?: string | null;
-  updatedAt: string;
-  createdAt: string;
-  email: string;
-  resetPasswordToken?: string | null;
-  resetPasswordExpiration?: string | null;
-  salt?: string | null;
-  hash?: string | null;
-  loginAttempts?: number | null;
-  lockUntil?: string | null;
-  sessions?:
-    | {
-        id: string;
-        createdAt?: string | null;
-        expiresAt: string;
-      }[]
-    | null;
-  password?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1002,10 +958,6 @@ export interface PayloadLockedDocument {
         value: number | User;
       } | null)
     | ({
-        relationTo: 'news';
-        value: number | News;
-      } | null)
-    | ({
         relationTo: 'faq';
         value: number | Faq;
       } | null)
@@ -1236,14 +1188,62 @@ export interface MediaSelect<T extends boolean = true> {
 export interface PostsSelect<T extends boolean = true> {
   title?: T;
   heroImage?: T;
-  content?: T;
+  content?:
+    | T
+    | {
+        postHeader?:
+          | T
+          | {
+              level?: T;
+              text?: T;
+              id?: T;
+              blockName?: T;
+            };
+        postText?:
+          | T
+          | {
+              content?: T;
+              id?: T;
+              blockName?: T;
+            };
+        postQuote?:
+          | T
+          | {
+              quote?: T;
+              author?: T;
+              id?: T;
+              blockName?: T;
+            };
+        postList?:
+          | T
+          | {
+              type?: T;
+              items?:
+                | T
+                | {
+                    text?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        postImage?:
+          | T
+          | {
+              image?: T;
+              caption?: T;
+              id?: T;
+              blockName?: T;
+            };
+      };
+  excerpt?: T;
+  readingTime?: T;
   relatedPosts?: T;
-  categories?: T;
+  category?: T;
   meta?:
     | T
     | {
         title?: T;
-        image?: T;
         description?: T;
       };
   publishedAt?: T;
@@ -1254,7 +1254,6 @@ export interface PostsSelect<T extends boolean = true> {
         id?: T;
         name?: T;
       };
-  generateSlug?: T;
   slug?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -1293,76 +1292,6 @@ export interface UsersSelect<T extends boolean = true> {
         createdAt?: T;
         expiresAt?: T;
       };
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "news_select".
- */
-export interface NewsSelect<T extends boolean = true> {
-  title?: T;
-  heroImage?: T;
-  content?:
-    | T
-    | {
-        newsHeader?:
-          | T
-          | {
-              level?: T;
-              text?: T;
-              id?: T;
-              blockName?: T;
-            };
-        newsText?:
-          | T
-          | {
-              content?: T;
-              id?: T;
-              blockName?: T;
-            };
-        newsQuote?:
-          | T
-          | {
-              quote?: T;
-              author?: T;
-              id?: T;
-              blockName?: T;
-            };
-        newsList?:
-          | T
-          | {
-              type?: T;
-              items?:
-                | T
-                | {
-                    text?: T;
-                    id?: T;
-                  };
-              id?: T;
-              blockName?: T;
-            };
-        newsImage?:
-          | T
-          | {
-              image?: T;
-              caption?: T;
-              id?: T;
-              blockName?: T;
-            };
-      };
-  excerpt?: T;
-  readingTime?: T;
-  category?: T;
-  meta?:
-    | T
-    | {
-        title?: T;
-        description?: T;
-      };
-  publishedAt?: T;
-  slug?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1726,8 +1655,8 @@ export interface Header {
                     value: number | Page;
                   } | null)
                 | ({
-                    relationTo: 'news';
-                    value: number | News;
+                    relationTo: 'posts';
+                    value: number | Post;
                   } | null);
               url?: string | null;
               id?: string | null;
@@ -1743,8 +1672,8 @@ export interface Header {
                     value: number | Page;
                   } | null)
                 | ({
-                    relationTo: 'news';
-                    value: number | News;
+                    relationTo: 'posts';
+                    value: number | Post;
                   } | null);
               url?: string | null;
               /**
@@ -1780,8 +1709,8 @@ export interface Footer {
                         value: number | Page;
                       } | null)
                     | ({
-                        relationTo: 'news';
-                        value: number | News;
+                        relationTo: 'posts';
+                        value: number | Post;
                       } | null);
                   url?: string | null;
                   id?: string | null;
@@ -1955,52 +1884,6 @@ export interface TaskSchedulePublish {
     user?: (number | null) | User;
   };
   output?: unknown;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "BannerBlock".
- */
-export interface BannerBlock {
-  style: 'info' | 'warning' | 'error' | 'success';
-  content: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'banner';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "CodeBlock".
- */
-export interface CodeBlock {
-  language?: ('typescript' | 'javascript' | 'css') | null;
-  code: string;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'code';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "MediaBlock".
- */
-export interface MediaBlock {
-  media: number | Media;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'mediaBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

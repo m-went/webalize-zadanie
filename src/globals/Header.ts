@@ -70,7 +70,7 @@ export const Header: GlobalConfig = {
                 {
                   name: 'reference',
                   type: 'relationship',
-                  relationTo: ['pages', 'news'],
+                  relationTo: ['pages', 'posts'],
                   required: true,
                   admin: {
                     condition: (_, siblingData) => siblingData?.type === 'reference',
@@ -117,7 +117,7 @@ export const Header: GlobalConfig = {
                 {
                   name: 'reference',
                   type: 'relationship',
-                  relationTo: ['pages', 'news'],
+                  relationTo: ['pages', 'posts'],
                   required: true,
                   admin: {
                     condition: (_, siblingData) => siblingData?.type === 'reference',
