@@ -20,7 +20,6 @@ import type {
 } from '@/payload-types'
 import { BannerBlock } from '@/blocks/Banner/Component'
 import { CallToActionBlock } from '@/blocks/CallToAction/Component'
-import { cn } from '@/utilities/ui'
 
 type NodeTypes =
   | DefaultNodeTypes
@@ -39,18 +38,11 @@ const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) 
   ...defaultConverters,
   ...LinkJSXConverter({ internalDocToHref }),
   blocks: {
-    banner: ({ node }) => <BannerBlock className="col-start-2 mb-4" {...node.fields} />,
+    banner: ({ node }) => <BannerBlock {...node.fields} />,
     mediaBlock: ({ node }) => (
-      <MediaBlock
-        className="col-start-1 col-span-3"
-        imgClassName="m-0"
-        {...node.fields}
-        captionClassName="mx-auto max-w-[48rem]"
-        enableGutter={false}
-        disableInnerContainer={true}
-      />
+      <MediaBlock {...node.fields} enableGutter={false} disableInnerContainer={true} />
     ),
-    code: ({ node }) => <CodeBlock className="col-start-2" {...node.fields} />,
+    code: ({ node }) => <CodeBlock {...node.fields} />,
     cta: ({ node }) => <CallToActionBlock {...node.fields} />,
   },
 })
@@ -62,20 +54,5 @@ type Props = {
 } & React.HTMLAttributes<HTMLDivElement>
 
 export default function RichText(props: Props) {
-  const { className, enableProse = true, enableGutter = true, ...rest } = props
-  return (
-    <ConvertRichText
-      converters={jsxConverters}
-      className={cn(
-        'payload-richtext',
-        {
-          container: enableGutter,
-          'max-w-none': !enableGutter,
-          'mx-auto prose md:prose-md dark:prose-invert': enableProse,
-        },
-        className,
-      )}
-      {...rest}
-    />
-  )
+  return <ConvertRichText converters={jsxConverters} {...props} />
 }

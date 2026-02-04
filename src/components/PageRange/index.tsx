@@ -13,7 +13,6 @@ const defaultCollectionLabels = {
 }
 
 export const PageRange: React.FC<{
-  className?: string
   collection?: keyof typeof defaultCollectionLabels
   collectionLabels?: {
     plural?: string
@@ -24,7 +23,6 @@ export const PageRange: React.FC<{
   totalDocs?: number
 }> = (props) => {
   const {
-    className,
     collection,
     collectionLabels: collectionLabelsFromProps,
     currentPage,
@@ -45,7 +43,7 @@ export const PageRange: React.FC<{
     {}
 
   return (
-    <div className={[className, 'font-semibold'].filter(Boolean).join(' ')}>
+    <div>
       {(typeof totalDocs === 'undefined' || totalDocs === 0) && 'Search produced no results.'}
       {typeof totalDocs !== 'undefined' &&
         totalDocs > 0 &&
