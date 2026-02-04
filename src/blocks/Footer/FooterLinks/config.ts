@@ -2,6 +2,7 @@ import type { Block } from 'payload'
 
 export const FooterLinks: Block = {
   slug: 'footerLinks',
+  interfaceName: 'FooterLinks',
   labels: {
     singular: 'Link column',
     plural: 'Link columns',

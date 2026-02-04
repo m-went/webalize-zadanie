@@ -6,7 +6,6 @@ import { Textarea as TextAreaComponent } from '@/components/ui/textarea'
 import React from 'react'
 
 import { Error } from '../Error'
-import { Width } from '../Width'
 
 export const Textarea: React.FC<
   TextField & {
@@ -14,15 +13,15 @@ export const Textarea: React.FC<
     register: UseFormRegister<FieldValues>
     rows?: number
   }
-> = ({ name, defaultValue, errors, label, register, required, rows = 3, width }) => {
+> = ({ name, defaultValue, errors, label, register, required, rows = 3 }) => {
   return (
-    <Width width={width}>
+    <div>
       <Label htmlFor={name}>
         {label}
 
         {required && (
-          <span className="required">
-            * <span className="sr-only">(required)</span>
+          <span>
+            * <span>(required)</span>
           </span>
         )}
       </Label>
@@ -35,6 +34,6 @@ export const Textarea: React.FC<
       />
 
       {errors[name] && <Error name={name} />}
-    </Width>
+    </div>
   )
 }

@@ -2,6 +2,7 @@ import type { Block } from 'payload'
 
 export const PostText: Block = {
   slug: 'postText',
+  interfaceName: 'PostText',
   labels: {
     singular: 'Text',
     plural: 'Texts',

@@ -2,6 +2,7 @@ import type { Block } from 'payload'
 
 export const PostList: Block = {
   slug: 'postList',
+  interfaceName: 'PostList',
   labels: {
     singular: 'List',
     plural: 'Lists',

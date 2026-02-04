@@ -2,6 +2,7 @@ import type { Block } from 'payload'
 
 export const PostHeader: Block = {
   slug: 'postHeader',
+  interfaceName: 'PostHeader',
   labels: {
     singular: 'Header',
     plural: 'Headers',

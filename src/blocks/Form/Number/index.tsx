@@ -6,21 +6,20 @@ import { Label } from '@/components/ui/label'
 import React from 'react'
 
 import { Error } from '../Error'
-import { Width } from '../Width'
 export const Number: React.FC<
   TextField & {
     errors: Partial<FieldErrorsImpl>
     register: UseFormRegister<FieldValues>
   }
-> = ({ name, defaultValue, errors, label, register, required, width }) => {
+> = ({ name, defaultValue, errors, label, register, required }) => {
   return (
-    <Width width={width}>
+    <div>
       <Label htmlFor={name}>
         {label}
 
         {required && (
-          <span className="required">
-            * <span className="sr-only">(required)</span>
+          <span>
+            * <span>(required)</span>
           </span>
         )}
       </Label>
@@ -31,6 +30,6 @@ export const Number: React.FC<
         {...register(name, { required })}
       />
       {errors[name] && <Error name={name} />}
-    </Width>
+    </div>
   )
 }

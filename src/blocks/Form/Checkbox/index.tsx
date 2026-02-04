@@ -8,20 +8,19 @@ import { Label } from '@/components/ui/label'
 import React from 'react'
 
 import { Error } from '../Error'
-import { Width } from '../Width'
 
 export const Checkbox: React.FC<
   CheckboxField & {
     errors: Partial<FieldErrorsImpl>
     register: UseFormRegister<FieldValues>
   }
-> = ({ name, defaultValue, errors, label, register, required, width }) => {
+> = ({ name, defaultValue, errors, label, register, required }) => {
   const props = register(name, { required: required })
   const { setValue } = useFormContext()
 
   return (
-    <Width width={width}>
-      <div className="flex items-center gap-2">
+    <div>
+      <div>
         <CheckboxUi
           defaultChecked={defaultValue}
           id={name}
@@ -32,14 +31,14 @@ export const Checkbox: React.FC<
         />
         <Label htmlFor={name}>
           {required && (
-            <span className="required">
-              * <span className="sr-only">(required)</span>
+            <span>
+              * <span>(required)</span>
             </span>
           )}
           {label}
         </Label>
       </div>
       {errors[name] && <Error name={name} />}
-    </Width>
+    </div>
   )
 }

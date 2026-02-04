@@ -2,7 +2,7 @@ import type { Block } from 'payload'
 
 export const FooterTimezones: Block = {
   slug: 'footerTimezones',
-  interfaceName: 'footerTimezones',
+  interfaceName: 'FooterTimezones',
   fields: [
     {
       name: 'timezones',

@@ -13,21 +13,20 @@ import React from 'react'
 import { Controller } from 'react-hook-form'
 
 import { Error } from '../Error'
-import { Width } from '../Width'
 
 export const Select: React.FC<
   SelectField & {
     control: Control
     errors: Partial<FieldErrorsImpl>
   }
-> = ({ name, control, errors, label, options, required, width, defaultValue }) => {
+> = ({ name, control, errors, label, options, required, defaultValue }) => {
   return (
-    <Width width={width}>
+    <div>
       <Label htmlFor={name}>
         {label}
         {required && (
-          <span className="required">
-            * <span className="sr-only">(required)</span>
+          <span>
+            * <span>(required)</span>
           </span>
         )}
       </Label>
@@ -40,7 +39,7 @@ export const Select: React.FC<
 
           return (
             <SelectComponent onValueChange={(val) => onChange(val)} value={controlledValue?.value}>
-              <SelectTrigger className="w-full" id={name}>
+              <SelectTrigger id={name}>
                 <SelectValue placeholder={label} />
               </SelectTrigger>
               <SelectContent>
@@ -58,6 +57,6 @@ export const Select: React.FC<
         rules={{ required }}
       />
       {errors[name] && <Error name={name} />}
-    </Width>
+    </div>
   )
 }

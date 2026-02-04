@@ -180,63 +180,7 @@ export interface Page {
     } | null;
     showSearch?: boolean | null;
   };
-  layout: (
-    | {
-        categories: {
-          categoryTitle: string;
-          categoryDescription?: string | null;
-          questions?:
-            | {
-                question: string;
-                answer: {
-                  root: {
-                    type: string;
-                    children: {
-                      type: any;
-                      version: number;
-                      [k: string]: unknown;
-                    }[];
-                    direction: ('ltr' | 'rtl') | null;
-                    format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-                    indent: number;
-                    version: number;
-                  };
-                  [k: string]: unknown;
-                };
-                id?: string | null;
-              }[]
-            | null;
-          id?: string | null;
-        }[];
-        id?: string | null;
-        blockName?: string | null;
-        blockType: 'faqBlock';
-      }
-    | {
-        populateBy?: ('collection' | 'selection') | null;
-        relationTo?: ('posts' | 'integrations') | null;
-        /**
-         * Select categories to show as filter buttons. Leave empty to show all.
-         */
-        selectedCategories?: (number | Category)[] | null;
-        limit?: number | null;
-        selectedDocs?:
-          | (
-              | {
-                  relationTo: 'posts';
-                  value: number | Post;
-                }
-              | {
-                  relationTo: 'integrations';
-                  value: number | Integration;
-                }
-            )[]
-          | null;
-        id?: string | null;
-        blockName?: string | null;
-        blockType: 'archive';
-      }
-  )[];
+  layout: (FaqBlock | ArchiveBlock)[];
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -249,6 +193,69 @@ export interface Page {
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FaqBlock".
+ */
+export interface FaqBlock {
+  categories: {
+    categoryTitle: string;
+    categoryDescription?: string | null;
+    questions?:
+      | {
+          question: string;
+          answer: {
+            root: {
+              type: string;
+              children: {
+                type: any;
+                version: number;
+                [k: string]: unknown;
+              }[];
+              direction: ('ltr' | 'rtl') | null;
+              format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+              indent: number;
+              version: number;
+            };
+            [k: string]: unknown;
+          };
+          id?: string | null;
+        }[]
+      | null;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'faqBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ArchiveBlock".
+ */
+export interface ArchiveBlock {
+  populateBy?: ('collection' | 'selection') | null;
+  relationTo?: ('posts' | 'integrations') | null;
+  /**
+   * Select categories to show as filter buttons. Leave empty to show all.
+   */
+  selectedCategories?: (number | Category)[] | null;
+  limit?: number | null;
+  selectedDocs?:
+    | (
+        | {
+            relationTo: 'posts';
+            value: number | Post;
+          }
+        | {
+            relationTo: 'integrations';
+            value: number | Integration;
+          }
+      )[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'archive';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -276,47 +283,7 @@ export interface Post {
   id: number;
   title: string;
   heroImage?: (number | null) | Media;
-  content?:
-    | (
-        | {
-            level: 'h1' | 'h2' | 'h3';
-            text: string;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'postHeader';
-          }
-        | {
-            content: string;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'postText';
-          }
-        | {
-            quote: string;
-            author: string;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'postQuote';
-          }
-        | {
-            type: 'ordered' | 'unordered';
-            items: {
-              text: string;
-              id?: string | null;
-            }[];
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'postList';
-          }
-        | {
-            image: number | Media;
-            caption?: string | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'postImage';
-          }
-      )[]
-    | null;
+  content?: (PostHeader | PostText | PostQuote | PostList | PostImage)[] | null;
   excerpt?: string | null;
   readingTime?: number | null;
   relatedPosts?: (number | Post)[] | null;
@@ -459,6 +426,63 @@ export interface FolderInterface {
   folderType?: 'media'[] | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PostHeader".
+ */
+export interface PostHeader {
+  level: 'h1' | 'h2' | 'h3';
+  text: string;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'postHeader';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PostText".
+ */
+export interface PostText {
+  content: string;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'postText';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PostQuote".
+ */
+export interface PostQuote {
+  quote: string;
+  author: string;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'postQuote';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PostList".
+ */
+export interface PostList {
+  type: 'ordered' | 'unordered';
+  items: {
+    text: string;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'postList';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PostImage".
+ */
+export interface PostImage {
+  image: number | Media;
+  caption?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'postImage';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1043,37 +1067,8 @@ export interface PagesSelect<T extends boolean = true> {
   layout?:
     | T
     | {
-        faqBlock?:
-          | T
-          | {
-              categories?:
-                | T
-                | {
-                    categoryTitle?: T;
-                    categoryDescription?: T;
-                    questions?:
-                      | T
-                      | {
-                          question?: T;
-                          answer?: T;
-                          id?: T;
-                        };
-                    id?: T;
-                  };
-              id?: T;
-              blockName?: T;
-            };
-        archive?:
-          | T
-          | {
-              populateBy?: T;
-              relationTo?: T;
-              selectedCategories?: T;
-              limit?: T;
-              selectedDocs?: T;
-              id?: T;
-              blockName?: T;
-            };
+        faqBlock?: T | FaqBlockSelect<T>;
+        archive?: T | ArchiveBlockSelect<T>;
       };
   meta?:
     | T
@@ -1086,6 +1081,41 @@ export interface PagesSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FaqBlock_select".
+ */
+export interface FaqBlockSelect<T extends boolean = true> {
+  categories?:
+    | T
+    | {
+        categoryTitle?: T;
+        categoryDescription?: T;
+        questions?:
+          | T
+          | {
+              question?: T;
+              answer?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ArchiveBlock_select".
+ */
+export interface ArchiveBlockSelect<T extends boolean = true> {
+  populateBy?: T;
+  relationTo?: T;
+  selectedCategories?: T;
+  limit?: T;
+  selectedDocs?: T;
+  id?: T;
+  blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1191,50 +1221,11 @@ export interface PostsSelect<T extends boolean = true> {
   content?:
     | T
     | {
-        postHeader?:
-          | T
-          | {
-              level?: T;
-              text?: T;
-              id?: T;
-              blockName?: T;
-            };
-        postText?:
-          | T
-          | {
-              content?: T;
-              id?: T;
-              blockName?: T;
-            };
-        postQuote?:
-          | T
-          | {
-              quote?: T;
-              author?: T;
-              id?: T;
-              blockName?: T;
-            };
-        postList?:
-          | T
-          | {
-              type?: T;
-              items?:
-                | T
-                | {
-                    text?: T;
-                    id?: T;
-                  };
-              id?: T;
-              blockName?: T;
-            };
-        postImage?:
-          | T
-          | {
-              image?: T;
-              caption?: T;
-              id?: T;
-              blockName?: T;
-            };
+        postHeader?: T | PostHeaderSelect<T>;
+        postText?: T | PostTextSelect<T>;
+        postQuote?: T | PostQuoteSelect<T>;
+        postList?: T | PostListSelect<T>;
+        postImage?: T | PostImageSelect<T>;
       };
   excerpt?: T;
   readingTime?: T;
@@ -1258,6 +1249,60 @@ export interface PostsSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PostHeader_select".
+ */
+export interface PostHeaderSelect<T extends boolean = true> {
+  level?: T;
+  text?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PostText_select".
+ */
+export interface PostTextSelect<T extends boolean = true> {
+  content?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PostQuote_select".
+ */
+export interface PostQuoteSelect<T extends boolean = true> {
+  quote?: T;
+  author?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PostList_select".
+ */
+export interface PostListSelect<T extends boolean = true> {
+  type?: T;
+  items?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PostImage_select".
+ */
+export interface PostImageSelect<T extends boolean = true> {
+  image?: T;
+  caption?: T;
+  id?: T;
+  blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1695,40 +1740,13 @@ export interface Header {
  */
 export interface Footer {
   id: number;
-  footerBlocks?:
-    | (
-        | FooterCompanyInfo
-        | {
-            links?:
-              | {
-                  label: string;
-                  type?: ('reference' | 'custom') | null;
-                  reference?:
-                    | ({
-                        relationTo: 'pages';
-                        value: number | Page;
-                      } | null)
-                    | ({
-                        relationTo: 'posts';
-                        value: number | Post;
-                      } | null);
-                  url?: string | null;
-                  id?: string | null;
-                }[]
-              | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'footerLinks';
-          }
-        | FooterTimezones
-      )[]
-    | null;
+  footerBlocks?: (FooterCompanyInfo | FooterLinks | FooterTimezones)[] | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "footerCompanyInfo".
+ * via the `definition` "FooterCompanyInfo".
  */
 export interface FooterCompanyInfo {
   title?: string | null;
@@ -1745,7 +1763,33 @@ export interface FooterCompanyInfo {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "footerTimezones".
+ * via the `definition` "FooterLinks".
+ */
+export interface FooterLinks {
+  links?:
+    | {
+        label: string;
+        type?: ('reference' | 'custom') | null;
+        reference?:
+          | ({
+              relationTo: 'pages';
+              value: number | Page;
+            } | null)
+          | ({
+              relationTo: 'posts';
+              value: number | Post;
+            } | null);
+        url?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'footerLinks';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FooterTimezones".
  */
 export interface FooterTimezones {
   timezones?:
@@ -1810,21 +1854,7 @@ export interface FooterSelect<T extends boolean = true> {
     | T
     | {
         footerCompanyInfo?: T | FooterCompanyInfoSelect<T>;
-        footerLinks?:
-          | T
-          | {
-              links?:
-                | T
-                | {
-                    label?: T;
-                    type?: T;
-                    reference?: T;
-                    url?: T;
-                    id?: T;
-                  };
-              id?: T;
-              blockName?: T;
-            };
+        footerLinks?: T | FooterLinksSelect<T>;
         footerTimezones?: T | FooterTimezonesSelect<T>;
       };
   updatedAt?: T;
@@ -1833,7 +1863,7 @@ export interface FooterSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "footerCompanyInfo_select".
+ * via the `definition` "FooterCompanyInfo_select".
  */
 export interface FooterCompanyInfoSelect<T extends boolean = true> {
   title?: T;
@@ -1849,7 +1879,24 @@ export interface FooterCompanyInfoSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "footerTimezones_select".
+ * via the `definition` "FooterLinks_select".
+ */
+export interface FooterLinksSelect<T extends boolean = true> {
+  links?:
+    | T
+    | {
+        label?: T;
+        type?: T;
+        reference?: T;
+        url?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FooterTimezones_select".
  */
 export interface FooterTimezonesSelect<T extends boolean = true> {
   timezones?:
